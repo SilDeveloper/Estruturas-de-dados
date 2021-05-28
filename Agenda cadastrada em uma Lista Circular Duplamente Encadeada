@@ -1,0 +1,409 @@
+// *******************************************************     
+
+// Implementacao de uma Agenda utilizando Lista Duplamente Encadeada Circular 
+
+// Complexidade O(1)    
+
+// Disciplina : Estrutura de Dados I   
+
+// Aluna : Silvia Miguêz de Siqueira Braga    
+
+// Professor : Erthal   
+
+// Data: 04/05/2021     
+
+// *******************************************************  
+
+  
+
+//declaracao de bibliotecas 
+
+#include <iostream> 
+
+#include <stdlib.h> 
+
+  
+
+using namespace std; 
+
+  
+
+struct lista //declaracao da struct 
+
+{ 
+
+  float dado; 
+
+  float peso;   // pesado 
+
+  float idade;  // etaria 
+
+  float altura; // h 
+
+  struct lista* prox; //ponteiro para o proximo 
+
+  struct lista* ant; //ponteiro para o anterior 
+
+}; 
+
+  
+
+  
+
+typedef struct lista Tlista; //DEFININDO O REGISTRO LISTA DO TIPO TLISTA 
+
+  
+
+  
+
+Tlista* lde; //DECLARA O PONTEIRO LDE DO TIPO TLISTA 
+
+  
+
+  
+
+Tlista* inicia(void) //Funcao inicia 
+
+{ 
+
+  return NULL; //retorna vazio 
+
+} 
+
+  
+
+  
+
+//funcao insere apos, recebe como parametro a idade, o peso e a altura 
+
+int insere_apos(Tlista* &l, float idade, float peso, float altura) 
+
+{ 
+
+  Tlista* novo; //declara o ponteiro novo do tipo Tlista 
+
+  
+
+  
+
+  novo = new(Tlista); //cria um novo ponteiro do tipo Tlista 
+
+  novo->idade = idade; // armazena o valor na variavel idade 
+
+  novo->peso = peso; // armazena o valor na variavel peso 
+
+  novo->altura = altura; // armazena o valor na variavel altura 
+
+  
+
+  
+
+  if (l==NULL) // se a lista estiver vazia 
+
+  { 
+
+    novo->prox = novo; // o prox do novo recebe o novo 
+
+    novo->ant = novo; // o anterior do novo recebe o novo 
+
+  
+
+  
+
+    l=novo; //adiciona à lista 
+
+  
+
+  
+
+  } else // senao 
+
+  { 
+
+    novo->prox = l->prox; //o prox do novo recebe o prox da lista 
+
+    l->prox = novo; //o prox da lista recebe o novo 
+
+  
+
+  
+
+    novo->ant = l; // o anterior ao novo recebe a lista 
+
+  
+
+  
+
+    novo->prox->ant = novo; //o anterior do prox do anterior recebe o novo 
+
+     
+
+    return 0; //retorna 0 
+
+  } 
+
+} //fim da funcao insere apos 
+
+  
+
+  
+
+void exibe(Tlista* l) //funcao exibe 
+
+{ 
+
+  int decide; //declara a var decide do tipo inteiro 
+
+   
+
+  if (l==NULL) //se a lista estiver vazia 
+
+  { 
+
+  	printf("LISTA VAZIA!!!"); //mostra a msg 
+
+  }else if (l!=NULL) //senaqo, se a lista nao estiver vazia 
+
+  { 
+
+    printf("EXIBINDO:::\n"); 
+
+    printf("Idade: %.2f \n", l->idade); //mostra a idade 
+
+    printf("Peso: %.2f \n", l->peso); //mostra o peso 
+
+    printf("Altura: %.2f \n", l->altura); //mostra a altura 
+
+     
+
+    do //faca 
+
+    { 
+
+      printf("Digite 1 para exibir o prox ou 2 para voltar ao menu \n"); //exibe a msg 
+
+      scanf("%d", &decide); //verifica a operacao 
+
+     
+
+      if (decide == 1) //se a operacao for 1 
+
+      { 
+
+        for(Tlista* aux = l->prox; aux != l; aux = aux->prox) //percorre a lista para mostrar o prox dado 
+
+        { 
+
+          printf("\n EXIBINDO PROX::: \n"); 
+
+          printf("Idade: %.2f \n", aux->idade); //mostra a idade 
+
+          printf("Peso: %.2f \n", aux->peso); // mostra o peso 
+
+          printf("Altura: %.2f \n", aux->altura); //mostra a altura 
+
+        } 
+
+      } else if (decide == 2) //senao, se a operacao foi 2 
+
+      { 
+
+          system("cls"); //limpa a tela 
+
+      } 
+
+    } while (decide != 2); // enquanto decide for diferente de 2, repete 
+
+  } 
+
+} //fim da funcao exibe 
+
+  
+
+  
+
+void retira(Tlista* &l) //funcao retira 
+
+{ 
+
+  Tlista* paux; //declara um ponteiro auxiliar 
+
+  paux = l; //ponteiro auxiliar recebe a lista 
+
+  
+
+  
+
+  
+
+  if (l==NULL) //se a lista estiver vazia 
+
+  { 
+
+  	printf("LISTA VAZIA!!!"); //exibe msg 
+
+  }else if (l!=NULL) //caso contrario 
+
+  { 
+
+    if (l->prox==l)  //prox da lista recebe a lista 
+
+    { 
+
+      delete paux; //deleta o ponteiro auxiliar 
+
+      l = NULL; //lista recebe vazio 
+
+    } 
+
+    else //senao 
+
+    { 
+
+      l->ant->prox = l->prox; //o proximo do anterior da lista recebe o proximo da lista 
+
+      l->prox->ant = l->ant; //o anterior do proximo da lista recebe o anterior da lista 
+
+  
+
+  
+
+      l=l->ant; //lista recebe o anterior da lista 
+
+  
+
+  
+
+      delete paux; //exclui o ponteiro auxiliar 
+
+    } 
+
+  } 
+
+} //fim do procedimento retira 
+
+  
+
+  
+
+  
+
+int main() //programa principal 
+
+{ 
+
+    int op; //cria a var op como um inteiro 
+
+    float etaria, pesado, h; //cria as var do tipo float 
+
+     
+
+    do //faca 
+
+    { 
+
+     
+
+      printf("\nDigite 1 para inserir, 2 para exibir, 3 para retirar ou 4 para sair: \n"); //menu 
+
+      scanf("%d",&op); //le a operacao 
+
+     
+
+    switch (op) //verifica a operaao atraves do switch case 
+
+      { 
+
+        case 1: //caso 1 
+
+        { 
+
+          printf("Digite a idade: \n"); //exibe msg 
+
+          scanf("%f",&etaria); //le a idade 
+
+  
+
+          printf("Digite o peso: \n"); //exibe msg 
+
+          scanf("%f",&pesado); //le o peso 
+
+  
+
+          printf("Digite a altura: \n"); //exibe altura 
+
+          scanf("%f",&h); //le altura 
+
+  
+
+          insere_apos(lde, etaria, pesado, h); //envia os dados para o procedimento insere apos 
+
+           
+
+        } 
+
+           
+
+        break; 
+
+         
+
+        case 2: //caso 2 
+
+        { 
+
+           	exibe(lde); //chama o proccedimento exibe 
+
+} 
+
+ 
+
+break; 
+
+ 
+
+case 3: //caso 3 
+
+        { 
+
+           	retira(lde); //chama o procedimento retira 
+
+} 
+
+ 
+
+break; 
+
+         
+
+        case 4: //caso 4 
+
+        {  
+
+          exit(0); //sai da aplicacao, fechando o programa  
+
+        } //fim do quarto caso  
+
+       
+
+        default: //mensagem de erro 
+
+        { 
+
+          printf("Você precisa escolher uma opção... \n"); //caso o usuario digite uma opção inválida 
+
+        } 
+
+       
+
+      } //fim do switch case  
+
+     
+
+    }while(op!=4); //enquanto a op for diferente de 4 
+
+     
+
+    return 0; //retorna 0 
+
+} //fim do programa principal 
