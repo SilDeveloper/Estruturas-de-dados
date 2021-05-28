@@ -1,0 +1,259 @@
+// *******************************************************    
+// Implementacao de uma Calculadora Polonesa Reversa utilizando Lista Encadeada 
+
+// Complexidade O(1)   
+// Disciplina : Estrutura de Dados I  
+// Aluna : Silvia Miguêz de Siqueira Braga   
+// Professor : Erthal  
+// Data: 04/05/2021   
+// ******************************************************* 
+
+ 
+//declaracao de bibliotecas 
+
+#include <stdio.h> 
+
+#include <stdlib.h> 
+
+
+//definindo a struct 
+
+struct pilha 
+
+{ 
+
+    int dado; //declara dado do tipo inteiro 
+
+    struct pilha* prox; //cria o ponteiro prox como um registro da pilha 
+
+}; //fim da struct pilha 
+
+typedef struct pilha Tpilha; //reserva um espaço de memória para o registro pilha do tipo Tpilha  
+
+Tpilha* le; //declara o ponteiro le(lista encadeada) do tipo Tpilha 
+
+
+Tpilha* cria(void) //funcao cria, para criar a pilha 
+{ 
+
+    return NULL; //retorna nulo 
+
+} //fim da funcao cria 
+
+  
+
+void mostra(Tpilha* l) //funcao mostra, para mostrar a pilha 
+{ 
+
+    Tpilha* aux = l; //cria um ponteiro auxiliar do tipo Tpilha que recebe a lista 
+
+    while (aux != NULL) { //enquanto a auxiliar for diferente de vazio 
+
+        printf("MOSTRANDO: %d\n", aux->dado); //mostra o dado da auxiliar 
+
+        aux = aux->prox; //auxiliar anda para o proximo 
+
+    } 
+
+} 
+
+int pop(Tpilha* &l) //funcao faz conta, retira da pilha e retorna o valor retirado 
+{ 
+
+    if (le != NULL) //se le for diferente de null 
+
+    { 
+
+        Tpilha* paux; //declara o ponteiro paux do tipo Tpilha 
+
+        paux = l; //paux recebe a lista 
+
+        int aux = l->dado; //declara aux do tipo inteiro para receber o dado da lista 
+
+        printf("Retirando o valor: %d\n",aux); //exibe a mensagem mostrando o conteudo de aux 
+
+        l = l->prox; //lista recebe o proximo da lista 
+
+        delete paux; //deleta o ponteiro auxiliar (paux)
+
+        return aux; //retorna aux 
+
+    }else //senão 
+
+    { 
+
+        printf("Underflow: Pilha vazia!!!\n"); //exibe a mensagem de Underflow 
+
+    } 
+
+} 
+
+void push(Tpilha* &l, int i) //funcao push, para inserir um valor na pilha 
+
+{ 
+
+    Tpilha* novo; //declara o ponteiro novo do tipo Tpilha 
+
+    //novo = (Tlista*) malloc(sizeof(Tlista)); 
+
+    novo = new(Tpilha); //cria um espaço para o ponteiro novo 
+
+    novo->dado = i; //o dado do ponteiro novo recebe i (valor a ser inserido) 
+
+    novo->prox = l; //o prox do novo recebe a lista 
+
+    l=novo; //lista recebe novo 
+
+} //fim da funcao push   
+
+int main() //função principal 
+
+{ 
+
+    le = cria(); //cria a lista 
+
+    int op,c; //declaracao de variaveis do tipo inteiro 
+
+    do //faca 
+    { 
+
+        printf("Escolha uma operação: \n"); 
+
+        printf("1 para adicionar; 2 para mostrar a pilha inteira; 3 para fazer uma conta ou 4 para sair:\n"); 
+
+        scanf("%d", &op); //le a operacao escolhida pelo usuario 
+        
+        
+        switch (op) //verificacao da operacao escolhida (switch case) 
+
+        { 
+
+        case 1: //caso 1 
+
+        { 
+
+            printf("Digite o valor para adicionar a pilha:\n"); 
+
+            scanf("%d", &c); //le o valor digitado pelo usuario 
+
+            push(le,c); //insere na pilha 
+
+        } 
+
+            break; //quebra do caso 1 
+
+        case 2: //caso 2 
+
+        { 
+
+            mostra(le); //mostra, exibe o conteudo da pilha 
+
+        } 
+
+            break; //quebra do caso 2 
+
+        case 3: //caso 3 
+
+        { 
+
+            //retira(le); 
+
+            if (le->prox == NULL) //se o prox da lista for vazio 
+
+            { 
+
+                printf("Impossível realizar qualquer operação\n"); //exibe a mensagem 
+
+            } 
+
+            char sinal; //declara a variavel sinal do tipo char (caracter) 
+
+            int res = 0; //declara a variavel res(resultado) do tipo inteiro comecando com 0 
+
+            printf("Escolha o sinal:\n"); 
+
+            scanf("%s", &sinal); //le o tipo de operacao escolhida pelo usuario 
+
+            if (sinal == '+') //se o sinal for + 
+            { 
+                res = (pop(le)+pop(le)); //res recebe a soma dos 2 ultimos valores retirados da pilha 
+
+                printf("O resultado e %d\n",res); //exibe o resultado 
+
+                //push(res); 
+
+            }else //senao 
+
+                if (sinal == '-') //se o sinal for - 
+
+                { 
+
+                    res = (pop(le)-pop(le)); //res recebe a subtracao dos 2 ultimos valores retirados da pilha 
+
+                    printf("O resultado e %d\n",res); //exibe o resultado 
+
+                }else //senao 
+
+  
+
+                    if (sinal == '*') //se o sinal for * 
+
+                    { 
+
+                        res = (pop(le)*pop(le)); //res recebe a multiplicacao dos 2 ultimos valores retirados da pilha 
+
+                        printf("O resultado e %d\n",res); //mostra o resultado 
+
+                    }else //senao 
+
+  
+
+                        if (sinal == '/') //se o sinal for / 
+
+                        { 
+
+                            int a = pop(le); //retira da pilha e guarda em a 
+
+                            int b = pop(le); //retira outro valor da pilha e guarda em b 
+
+                            if (b != 0) { //se b for diferente de 0 
+
+                                res = (int)(a/b); //resultado recebe a divisao de a por b 
+
+                                printf("O resultado e %d\n",res); //mostra o resultado 
+
+                            } else { //senao 
+
+                                printf("Impossivel dividir por 0\n"); //mostra a mensagem 
+
+                            } 
+
+                        }else //senao 
+
+                        { 
+
+                            printf("Operação inválida"); //mostra a mensagem 
+
+                        } 
+
+            push(le, res); //coloca na pilha o resultado   
+
+        } 
+
+            break; //quebra do caso 3 
+
+        case 4: //caso 4 
+
+        { 
+
+            exit(0); //fecha a aplicacao 
+
+        } 
+
+        } 
+
+    }while (op!=4); //enquanto op for diferente de 4 
+
+    return 0; //retorna 0 
+
+} //fim do programa principal 
